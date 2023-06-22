@@ -6,23 +6,23 @@ export class CacheProvider {
     }
 
     async get(key) {
-        return await this.client.get(key);
+        return this.client.get(key);
     }
 
     async increment(key) {
-        return await this.client.incr(key);
+        return this.client.incr(key);
     }
 
     async delete(key) {
-        return await this.client.del(key);
+        return this.client.del(key);
     }
 
     async keys() {
-        return await this.client.keys('*');
+        return this.client.keys('*');
     }
 
     async clear() {
-        this.client.flushall();
+        return this.client.flushall();
     }
 
     async stop() {
@@ -45,19 +45,22 @@ export default {
         this._provider = provider;
     },
     async get(key) {
-        return await this.provider.get(key);
+        return this.provider.get(key);
+    },
+    async getInt(key, defaultValue) {
+        return parseInt(await this.get(key), 10) || defaultValue;
     },
     async increment(key) {
-        return await this.provider.increment(key);
+        return this.provider.increment(key);
     },
     async delete(key) {
-        return await this.provider.delete(key);
+        return this.provider.delete(key);
     },
     async keys() {
-        return await this.provider.keys();
+        return this.provider.keys();
     },
     async clear() {
-        return await this.provider.clear();
+        return this.provider.clear();
     },
     resetProvider() {
         this._provider.stop();

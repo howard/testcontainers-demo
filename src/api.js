@@ -7,7 +7,7 @@ const termPattern = '[0-9a-z]{1,10}';
 
 router.get(`/:term(${termPattern})`, async (req, res) => {
     const term = req.params.term;
-    const count = parseInt(await cache.get(term), 10) || 0;
+    const count = await cache.getInt(term, 0);
 
     res.send({term, count});
 });
@@ -30,10 +30,14 @@ router.delete('/', async (req, res) => {
     res.status(204).send();
 });
 
-router.get('/', async (req, res) => {
+router.get('/', async (req
+                       , res) => {
+    const termToObjectWithCount = async (term) => ({term, count: await cache.getInt(term, 0)});
+    const descendingCountPredicate = (left, right) => right.count - left.count;
+
     const terms = (await Promise.all((await cache.keys())
-        .map(async (term) => ({term, count: parseInt(await cache.get(term))}))
-    )).sort((left, right) => right.count - left.count);
+        .map(termToObjectWithCount))
+    ).sort(descendingCountPredicate);
 
     res.send(terms);
 });

@@ -6,7 +6,7 @@ describe('cache', () => {
 
     beforeAll(async () => {
         redisContainer = await setUpRedisTestcontainer();
-    }, 10 * 1000); // Increase timeout so Redis has enough time to start, which might require downloading the image.
+    });
 
     afterAll(async () => {
         await tearDownRedisTestcontainer(redisContainer);
@@ -43,5 +43,14 @@ describe('cache', () => {
         await cache.increment('more');
 
         expect((await cache.keys()).sort()).toEqual(['listall', 'more']);
+    });
+
+    it('should retrieve integers', async () => {
+        await cache.increment('int');
+        expect(await cache.getInt('int')).toBe(1);
+    });
+
+    it('should use default value when trying to retrieve missing integer', async () => {
+        expect(await cache.getInt('int', 123)).toBe(123);
     });
 });
