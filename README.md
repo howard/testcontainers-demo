@@ -1,14 +1,14 @@
 # Testcontainers Demo
 
 This demo is part of a presentation at the [Salzburg Web Dev Meetup June 2023](https://www.meetup.com/salzburgwebdev/events/293568750/).
-Slides are available [here](#TODO).
+Slides are available [here](./slides.pdf).
 
 ## Prerequisites
 
 Docker must be installed and executable without requiring interaction (e.g. `sudo` password).
 Docker Desktop should work out of the box.
 On Linux, it's usually necessary to add your user to the `docker` group and starting a fresh desktop session for the group change to take effect.
-This should even work with Docker for Windows 🤯 .
+This should even work with Docker for Windows.
 
 ## Setup
 
